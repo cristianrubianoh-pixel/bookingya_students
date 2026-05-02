@@ -76,7 +76,7 @@ src/
 ---
 
 
-## Evaluación académica: fases TDD, BDD y ATDD (copiar y pegar)
+## Evaluación académica: fases TDD, BDD y ATDD
 
 Trabajo de referencia con **pruebas en tres capas**.
 
@@ -89,7 +89,7 @@ Trabajo de referencia con **pruebas en tres capas**.
 Copia y pega (ajusta la ruta de `cd` a tu equipo):
 
 ```powershell
-cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+cd ...\bookingya_students
 git fetch origin
 git checkout main
 git pull origin main
@@ -102,7 +102,7 @@ git pull origin main
 Terminal **1** (déjala abierta hasta terminar las demos):
 
 ```powershell
-cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+cd ...\bookingya_students
 .\mvnw.cmd spring-boot:run
 ```
 
@@ -129,7 +129,7 @@ Ubicación del código: `src\test\java\com\project\bookingya\services\Reservatio
 Ejecutar **solo** esas pruebas (en **otra terminal**, con la carpeta raíz del repo):
 
 ```powershell
-cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+cd ...\bookingya_students
 .\mvnw.cmd "-Dtest=com.project.bookingya.services.ReservationServiceTest" test
 ```
 
@@ -152,7 +152,7 @@ Feature: `src\test\resources\features\reservations.feature`
 Genera reporte Serenity con **verify** (no hace falta tener la API levantada; usa contexto de prueba/H2):
 
 ```powershell
-cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+cd ...\bookingya_students
 .\mvnw.cmd clean verify
 ```
 
@@ -169,7 +169,7 @@ cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
 En **PowerShell nueva** en la raíz del repo:
 
 ```powershell
-cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+cd ...\bookingya_students
 npm ci
 $env:BASE_URL = "http://localhost:8080"
 npm run test:atdd
