@@ -146,6 +146,121 @@ Solo en la rama `main`:
 
 ---
 
+## Evaluación académica: fases TDD, BDD y ATDD (copiar y pegar)
+
+Trabajo de referencia con **pruebas en tres capas** en la rama **`dev-sc`** (ajusta la rama si tu docente usa otra).
+
+**Requisitos:** JDK 17, Node.js + npm, PostgreSQL accesible (por ejemplo Docker) y archivo **`.env`** configurado desde [`.env.example`](.env.example). Abre cada bloque en **PowerShell** en la **raíz del proyecto** (`bookingya_students`).
+
+---
+
+### Paso 0 — Rama y ubicación del repo
+
+Copia y pega (ajusta la ruta de `cd` a tu equipo):
+
+```powershell
+cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+git fetch origin
+git checkout dev-sc
+git pull origin dev-sc
+```
+
+---
+
+### Paso 1 — Levantar la aplicación API
+
+Terminal **1** (déjala abierta hasta terminar las demos):
+
+```powershell
+cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+.\mvnw.cmd spring-boot:run
+```
+
+En consola debe verse el arranque de Spring Boot y el Tomcat en el puerto **8080**.
+
+- Si aparece **`Port 8080 was already in use`**, cierra la otra Java que está usando ese puerto o revisa procesos antes de repetir este paso.
+
+---
+
+### Paso 2 — Swagger UI (documentación HTTP)
+
+Con la API en marcha, abre el navegador en:
+
+[**http://localhost:8080/api/swagger-ui/index.html#/**](http://localhost:8080/api/swagger-ui/index.html#/)
+
+Ahí puedes mostrar paso a paso los endpoints de **Rooms**, **Guests** y **Reservations** como apoyo visual (opcional ante el profesor; la evidencia automatizada viene de las siguientes fases).
+
+---
+
+### FASE 1 — TDD (JUnit / pruebas unitarias sobre `ReservationService`)
+
+Ubicación del código: `src\test\java\com\project\bookingya\services\ReservationServiceTest.java`
+
+Ejecutar **solo** esas pruebas (en **otra terminal**, con la carpeta raíz del repo):
+
+```powershell
+cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+.\mvnw.cmd "-Dtest=com.project.bookingya.services.ReservationServiceTest" test
+```
+
+**Qué debe mostrarse al final:** `Tests run:` con **`Failures: 0`**, **`Errors: 0`** y **`BUILD SUCCESS`**.
+
+(Opcional) Toda la suite que corre en `test` (incluye más pruebas que solo `ReservationService`):
+
+```powershell
+.\mvnw.cmd test
+```
+
+Informes Surefire: `target\surefire-reports\`
+
+---
+
+### FASE 2 — BDD (Gherkin + Cucumber + Serenity)
+
+Feature: `src\test\resources\features\reservations.feature`
+
+Genera reporte Serenity con **verify** (no hace falta tener la API levantada; usa contexto de prueba/H2):
+
+```powershell
+cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+.\mvnw.cmd clean verify
+```
+
+**Qué mostrar:** log de Cucumber por escenarios y **`BUILD SUCCESS`**. Como evidencia BDD abierta aparte del texto de consola, abre en el navegador:
+
+`target\site\serenity\index.html`
+
+---
+
+### FASE 3 — ATDD (Playwright + TypeScript contra la API REST)
+
+**Requiere que la API esté arriba** (Paso 1 con `spring-boot:run` y mismo host/puerto que Playwright espera por defecto).
+
+En **PowerShell nueva** en la raíz del repo:
+
+```powershell
+cd C:\Users\Sebastian-PC\DEV\ESPECIALIDAD\bookingya_students
+npm ci
+$env:BASE_URL = "http://localhost:8080"
+npm run test:atdd
+```
+
+*(Si `npm ci` ya corrió y no cambiaste dependencias, el segundo comando puede ejecutarse solo tras fijar `BASE_URL`.)*
+
+**Qué mostrar:** líneas **`N passed`** y tiempo total al cerrar Playwright.
+
+Configuración: [`playwright.config.ts`](playwright.config.ts). Especificaciones: [`tests/atdd/reservations.api.spec.ts`](tests/atdd/reservations.api.spec.ts).
+
+---
+
+### Guía ampliada (misma información con más contexto)
+
+- [GUIA_DESDE_CERO/09_COMANDOS_CONSOLA_POR_FASE.md](GUIA_DESDE_CERO/09_COMANDOS_CONSOLA_POR_FASE.md) — comandos por fase, perfil **`test`/JAR para H2**, y errores típicos  
+- [GUIA_DESDE_CERO/05_DESARROLLO_TDD_BDD_ATDD.md](GUIA_DESDE_CERO/05_DESARROLLO_TDD_BDD_ATDD.md) — rol de cada herramienta  
+- [GUIA_DESDE_CERO/08_EVIDENCIAS_PARA_VIDEO.md](GUIA_DESDE_CERO/08_EVIDENCIAS_PARA_VIDEO.md) — cómo ordenar evidencias para sustentación
+
+---
+
 ## 🧪 Ejecución y Pruebas
 
 ### ▶️ Ejecución Local
@@ -219,7 +334,7 @@ Los test cases automatizados validan, entre otros:
 Disponible automáticamente en:
 
 ```text
-http://localhost:8080/api/swagger-ui/index.html
+http://localhost:8080/api/swagger-ui/index.html#/
 ```
 
 ---

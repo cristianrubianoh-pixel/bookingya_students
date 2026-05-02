@@ -11,6 +11,7 @@ Si nunca has usado Git, Docker, Java o pruebas automatizadas, empieza aquí.
 5. `05_DESARROLLO_TDD_BDD_ATDD.md`
 6. `06_ENTREGA_FINAL.md`
 7. `08_EVIDENCIAS_PARA_VIDEO.md` (opcional pero recomendado antes de grabar)
+8. `09_COMANDOS_CONSOLA_POR_FASE.md` (comandos PowerShell por fase para mostrar resultado al profesor)
 
 ## Qué vas a lograr al final
 

@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,6 +68,7 @@ class ReservationServiceTest {
         );
     }
 
+    @SuppressWarnings("null")
     @Test
     void create_shouldCreateReservationSuccessfully() {
         UUID roomId = UUID.randomUUID();
@@ -78,10 +80,10 @@ class ReservationServiceTest {
         stubValidGuest(guestId);
         stubNoOverlaps(roomId, guestId, dto, null);
 
-        ReservationEntity savedEntity = buildEntity(reservationId, dto);
+        ReservationEntity savedEntity = Objects.requireNonNull(buildEntity(reservationId, dto));
         when(mapper.map(dto, ReservationEntity.class)).thenReturn(savedEntity);
         when(mapper.map(savedEntity, Reservation.class)).thenReturn(toReservation(savedEntity));
-        when(reservationRepository.saveAndFlush(any(ReservationEntity.class))).thenReturn(savedEntity);
+        when(reservationRepository.saveAndFlush(savedEntity)).thenReturn(savedEntity);
 
         Reservation result = reservationService.create(dto);
 
@@ -89,11 +91,12 @@ class ReservationServiceTest {
         assertEquals(reservationId, result.getId());
         assertEquals(roomId, result.getRoomId());
         assertEquals(guestId, result.getGuestId());
-        verify(reservationRepository).saveAndFlush(any(ReservationEntity.class));
+        verify(reservationRepository).saveAndFlush(savedEntity);
         verify(reservationRepository, never()).delete(any());
         assertTrue(result.getCheckIn().isBefore(result.getCheckOut()));
     }
 
+    @SuppressWarnings("null")
     @Test
     void create_shouldThrow_whenDateRangeInvalid() {
         UUID roomId = UUID.randomUUID();
@@ -204,7 +207,7 @@ class ReservationServiceTest {
             return null;
         }).when(mapper).map(any(ReservationDto.class), any(ReservationEntity.class));
 
-        when(reservationRepository.saveAndFlush(any(ReservationEntity.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(reservationRepository.saveAndFlush(existing)).thenReturn(existing);
         when(mapper.map(any(ReservationEntity.class), eq(Reservation.class))).thenAnswer(inv -> toReservation(inv.getArgument(0)));
 
         dto.setNotes("actualizada");
